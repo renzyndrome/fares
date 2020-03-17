@@ -1,3 +1,16 @@
+
+## Branch Naming
+
+| Type        | Description           |
+| ------------- |:-------------:|
+| feat      | Feature I'm adding or expanding |
+| bug      | Bug fix or experiment      |
+| hotfix | Quick patch on a ceertain release      |
+| junk | Throwaway branch created to experiment      |
+
+*branch/type-of-branch/short-desc*
+
+
 ### build components:
 docker-compose build
 
