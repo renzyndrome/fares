@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, BalanceForm
@@ -44,6 +45,7 @@ def profile(request):
 
 @login_required
 def view_user(request, user_id):
+    request.POST._mutable = True
     user_profile = Profile.objects.get(pk=user_id)
     user = user_profile.user
     if request.method == 'POST': 
@@ -51,6 +53,8 @@ def view_user(request, user_id):
         if(request.user.profile.role == 'Cashier'):
             p_form = BalanceForm(request.POST, request.FILES,
                                     instance=user_profile)
+            new_value = [Decimal(p_form.data['additional_balance']) ,Decimal(p_form.data['balance'])]
+            p_form.data['balance'] = sum(new_value)
         else:
             p_form = ProfileUpdateForm(request.POST, request.FILES,
                                     instance=user_profile)
