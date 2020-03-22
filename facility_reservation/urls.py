@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from users import views as user_views
+from facility import views as facility_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +25,9 @@ urlpatterns = [
     path('password-reset-complete/',
                     auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
                     name='password_reset_complete'),
-    path('user_list/', user_views.user_list, name='user_list')
+    path('user_list/', user_views.user_list, name='user_list'),
+    path('facility_list/',facility_views.facilities, name='facility_list'),
+    path('facility/<int:facility_id>', facility_views.facility, name='facility')
 ]
 
 if settings.DEBUG:
