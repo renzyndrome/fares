@@ -26,8 +26,13 @@ tailing docker logs docker logs -f image_name
 
 ### Rebuilding
 $ docker-compose stop
+
 $ docker-compose rm -f
+
 $ docker-compose build
+
 $ docker-compose up -d
+
 $ docker-compose exec web_1 bash
+
 $ python manage.py migrate
