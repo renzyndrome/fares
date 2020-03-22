@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, BalanceForm
@@ -44,24 +45,28 @@ def profile(request):
 
 @login_required
 def view_user(request, user_id):
+    request.POST._mutable = True
     user_profile = Profile.objects.get(pk=user_id)
     user = user_profile.user
     if request.method == 'POST': 
-        u_form = UserUpdateForm(request.POST, instance=user)
+        #u_form = UserUpdateForm(request.POST, instance=user)
         if(request.user.profile.role == 'Cashier'):
             p_form = BalanceForm(request.POST, request.FILES,
                                     instance=user_profile)
+            new_value = [Decimal(p_form.data['additional_balance']) ,Decimal(p_form.data['balance'])]
+            p_form.data['balance'] = sum(new_value)
         else:
             p_form = ProfileUpdateForm(request.POST, request.FILES,
                                     instance=user_profile)
     
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
+        #if u_form.is_valid() and p_form.is_valid():
+        if p_form.is_valid():
+            #u_form.save()
             p_form.save()
             messages.success(request, f'Your account has been updated!')
             return redirect('view_user', user_id=user_id)
     else:
-        u_form = UserUpdateForm(instance=user)
+        #u_form = UserUpdateForm(instance=user)
         if(request.user.profile.role == 'Cashier'):
             p_form = BalanceForm(instance=user_profile)
         else:
@@ -69,7 +74,7 @@ def view_user(request, user_id):
 
     context = {
         'user': user,
-        'u_form': u_form,
+        #'u_form': u_form,
         'p_form': p_form
     }
 

@@ -23,6 +23,11 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['image', 'first_name', 'last_name']
 
 class BalanceForm(forms.ModelForm):
+    additional_balance = forms.DecimalField(max_digits=10, decimal_places=2)
+    balance = forms.DecimalField(widget=forms.TextInput(attrs={'readonly':'True'}), max_digits=10, decimal_places=2)
     class Meta:
         model = Profile
         fields = ['image', 'balance']
+    
+    def save(self, commit=True):
+        return super(BalanceForm, self).save(commit=commit)

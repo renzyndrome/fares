@@ -8,7 +8,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     role = models.CharField(max_length=50)
-    balance = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     image = models.ImageField(default='default.png', upload_to='profile_pics')
 
     def __str__(self):
