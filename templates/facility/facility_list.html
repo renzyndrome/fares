@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Facility</th>
+                    <th>Rate</th>
+                    <th>isVehicle</th>
+                    <th>Capacity</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {%if facilities %}
+                    {%for facility in facilities %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'facility' facility_id=facility.id%}">
+                            {{ facility.name}}</a>
+                        </td>
+
+                        <td>
+                            {{ facility.rate}}
+                        </td>
+
+                        <td>
+                            {{ facility.isVehicle}}
+                        </td>
+
+                        <td>
+                            {{ facility.capacity}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <p> NO FACILITY AVAILABLE </p>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

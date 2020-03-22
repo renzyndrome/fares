@@ -31,3 +31,4 @@ class BalanceForm(forms.ModelForm):
     
     def save(self, commit=True):
         return super(BalanceForm, self).save(commit=commit)
+
