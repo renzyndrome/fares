@@ -1,0 +1,15 @@
+# Django #
+*.log
+*.pot
+*.pyc
+_pycache_
+db.sqlite3
+media/profile_pics/*
+
+# Visual Studio Code # 
+.vscode/* 
+!.vscode/settings.json 
+!.vscode/tasks.json 
+!.vscode/launch.json 
+!.vscode/extensions.json 
+.history
