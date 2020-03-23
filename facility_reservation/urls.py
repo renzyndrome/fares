@@ -7,6 +7,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('',user_views.home, name='home'),
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
@@ -26,8 +27,8 @@ urlpatterns = [
                     auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
                     name='password_reset_complete'),
     path('user_list/', user_views.user_list, name='user_list'),
-    path('facility_list/',facility_views.facilities, name='facility_list'),
-    path('facility/<int:facility_id>', facility_views.facility, name='facility')
+    path('facility/',facility_views.facility, name='facility_list'),
+    path('facility/<int:facility_id>/', facility_views.facility_detail, name='facility_detail')
 ]
 
 if settings.DEBUG:

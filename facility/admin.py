@@ -26,7 +26,7 @@ class FacilityAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     fieldsets = (
         (Facility, {
-            'fields': ('name', 'rate', 'isVehicle',)
+            'fields': ('name','image', 'rate', 'isVehicle',)
         }),
         ('Additional Info', {
             'classes': ('collapse',),

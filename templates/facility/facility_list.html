@@ -1,45 +1,25 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+
 {% block content %}
-<div>
-    <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Facility</th>
-                    <th>Rate</th>
-                    <th>isVehicle</th>
-                    <th>Capacity</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                {%if facilities %}
-                    {%for facility in facilities %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'facility' facility_id=facility.id%}">
-                            {{ facility.name}}</a>
-                        </td>
+    
 
-                        <td>
-                            {{ facility.rate}}
-                        </td>
-
-                        <td>
-                            {{ facility.isVehicle}}
-                        </td>
-
-                        <td>
-                            {{ facility.capacity}}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                <p> NO FACILITY AVAILABLE </p>
-                {% endif %}
-            </tbody>
-        </table>
+<div class="card-columns custom-card">
+    {% for facility in facilities %}
+    <a  href="{% url 'facility_detail' facility.id %}">
+    <div class="card">
+    <img src="{{ facility.image.url  }}" class="card-img-top" alt="...">
+      <div class="card-body text-center">
+        <h3 class="card-title text-left">{{facility.name}}</h3>
+        <p class="card-text text-left">Some text inside the first card</p>
+      </div>
+      <div class="card-footer text-center">
+        <small class="text-muted">Rate: P{{facility.rate}}</small>
+      </div>
     </div>
-</div>
+  </a>
+    {% endfor %}
+  </div>
+
+
 {% endblock content %}
