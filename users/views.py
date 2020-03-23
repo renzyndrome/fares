@@ -2,8 +2,13 @@ from django.shortcuts import render, redirect
 from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, BalanceForm
 from .models import Profile
+
+def home(request):
+	return render(request, 'index.html')
+
 
 def register(request):
     if request.method == 'POST': 
