@@ -2,11 +2,84 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="content-section">
-  <img src="{{ facility.image.url  }}">
+  <!-- <img src="{{ facility.image.url  }}">
   <h4>{{ facility.name }}</h4>
   <h6>Capacity: {{ facility.capacity }}</h6>
   <h6><span>P{{ facility.rate }}/hr</h6>
-  <button class="btn btn-success">Reserve</button>
+  <button class="btn btn-success">Reserve</button> -->
+
+  <!-- Page Content -->
+<div class="container">
+
+  <!-- Portfolio Item Heading -->
+  <div class="row">
+    <div class="col-md-10">
+      <h1 class="my-4">{{ facility.name }}
+        <small><h6><span>P{{ facility.rate }}/hr</h6></small>
+      </h1>
+    </div>
+    <div class="col-md2">
+      <a href="{% url 'reserve' facility.id %}" class="btn btn-lg btn-success my-4">Reserve</button></a>
+    </div>
+
+</div>
+
+  <!-- Portfolio Item Row -->
+  <div class="row my-3">
+
+    <div class="col-md-8">
+      <img class="img-fluid" src="{{ facility.image.url  }}" alt="">
+    </div>
+
+    <div class="col-md-4">
+      <h3 class="my-3">Project Description</h3>
+      <p>{{facility.description}}</p>
+      <h3 class="my-3">Suitable for the following:</h3>
+      <ul>
+        {{facility.tags_set}}
+        {% for tag in tags %}
+          <li>{{ tag }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+  <!-- Related Projects Row -->
+  <h3 class="my-4">Gallery</h3>
+
+  <div class="row">
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+          </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+          </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+          </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+          </a>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
 </div>
   
 {% endblock content %}

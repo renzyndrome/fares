@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     
     'crispy_forms',
     'stdimage',
+    'bootstrap_datepicker_plus',
+    'bootstrap4',
 
     ]
 
@@ -135,4 +137,9 @@ MEDIA_URL = '/media/'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_REDIRECT_URL = 'profile' # redirect to profile for the meantime
+LOGIN_REDIRECT_URL = 'home'
+
+# DATE_INPUT_FORMATS = ['b/%d/%Y']
+
+# Time Format
+TIME_INPUT_FORMATS = ['%I:%M %p',]

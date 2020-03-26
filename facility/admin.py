@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Facility, Service, Reservation
+from .models import Facility, Service, Tag, Reservation
 from users.models import Profile
 from users.admin import ProfileAdmin
 
@@ -26,7 +26,7 @@ class FacilityAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     fieldsets = (
         (Facility, {
-            'fields': ('name','image', 'rate', 'isVehicle',)
+            'fields': ('name','image','description','tags', 'rate', 'isVehicle',)
         }),
         ('Additional Info', {
             'classes': ('collapse',),
@@ -42,6 +42,7 @@ class ReservationAdmin(admin.ModelAdmin):
 
 admin.site.register(Facility, FacilityAdmin)
 admin.site.register(Service)
+admin.site.register(Tag)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.unregister(Profile)
 admin.site.register(Profile, ProfileAdmin)
