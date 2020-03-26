@@ -5,6 +5,9 @@
 _pycache_
 db.sqlite3
 media/profile_pics/*
+media/facility/*
+migrations
+migrations/*
 
 # Visual Studio Code # 
 .vscode/* 

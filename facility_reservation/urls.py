@@ -28,7 +28,8 @@ urlpatterns = [
                     name='password_reset_complete'),
     path('user_list/', user_views.user_list, name='user_list'),
     path('facility/',facility_views.facility, name='facility_list'),
-    path('facility/<int:facility_id>/', facility_views.facility_detail, name='facility_detail')
+    path('facility/<int:facility_id>/', facility_views.facility_detail, name='facility_detail'),
+    path('reserve/<int:facility_id>/', facility_views.reserve, name='reserve'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,16 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+<div class="container">
+  {{ r_form.media }}
+<form method="post">{% csrf_token %}
+  {%  bootstrap_form r_form layout='inline' %}
+  <input type="submit" value="Save">
+</form>
+</div>
+
+
+{% endblock content %}
