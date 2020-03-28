@@ -23,8 +23,6 @@ class Facility (models.Model):
     def __str__(self):
         return self.name
 
-
-
 class Service (models.Model):
     name =  models.CharField(max_length=200)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -41,7 +39,7 @@ class Reservation(models.Model):
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
     services = models.ManyToManyField(Service, null=True, blank=True)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-
+    cancelation_note = models.CharField(max_length=300)
+    
     def __str__(self):
         return f'{self.facility} by {self.user}'
-

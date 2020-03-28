@@ -37,3 +37,9 @@ class ReservationForm(forms.ModelForm):
                  }
              ).end_of('reservation time'),
          }
+
+class CancellationForm(forms.ModelForm):
+    
+    class Meta:
+        model = Reservation
+        fields = ['cancelation_note']
