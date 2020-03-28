@@ -26,7 +26,13 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="{% url 'facility_list' %}">Facilities</a>
-                <a class="nav-item nav-link" href="">Top Up</a>
+                {% if user.profile.role.lower == "cashier" or user.profile.role.lower == "admin" %}
+                <a class="nav-item nav-link" href="{% url 'user_list' %}">Top Up</a>
+                {% endif %}
+                <a class="nav-item nav-link" href="{% url 'reservation_list' %}">My Reservation</a>
+                {% if user.profile.role.lower == "admin" %}
+                <a class="nav-item nav-link" href="{% url 'cancellation_request_list' %}">Cancellation Requests</a>
+                {% endif %}
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
