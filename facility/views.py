@@ -29,20 +29,35 @@ def reserve(request, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         facility_rate = facility.rate
         user = Profile.objects.get(user=request.user.id)
-        services = Service
+        services = Service.objects.all()
         r_form = ReservationForm(request.POST)
         if r_form.is_valid():
-            reserve = r_form.save(commit=False)
-            reserve.user = user
-            reserve.facility = facility
-            # reserve.services.add()
-            reserve.total_amount = facility_rate
-            reserve.save()
-            return redirect('/')
+            try:
+                reserve = r_form.save(commit=False)
+                reserve.user = user
+                reserve.facility = facility
+
+
+                cart = [facility.rate]
+                for service in reserve.services.all():
+                    cart.append(service.price)
+
+                
+                reserve.total_amount = sum(cart)
+                if user.balance >= reserve.total_amount:                    
+                    reserve.save()
+                    return redirect('reservation_list')
+            except:
+                return redirect('facility_list')
+            
     else:
         r_form = ReservationForm()
+    r = dir(r_form)
+    services = Service.objects.all()
     context = {
         'r_form': r_form,
+        'r': r,
+        'my_services': services
     }
 
     return render(request, 'facility/reserve.html', context)
@@ -68,7 +83,9 @@ def cancellation_request_list(request):
 @login_required
 def reservation_list(request):
     reservations = Reservation.objects.filter(user=request.user.profile)
-
+    for reservation in reservations:
+        if reservation.status == 'CANCELLED':
+            reservation.delete()
     context = {
         'reservations': reservations
     }
@@ -84,7 +101,7 @@ def cancellation_request(request, reservation_id):
             form = c_form.save(commit=False)
             form.status = 'PENDING FOR CANCELLATION'
             form.save()
-            return redirect('/')
+            return redirect('reservation_list')
         
     else:
         c_form = CancellationForm()

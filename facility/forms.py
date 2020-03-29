@@ -15,11 +15,12 @@ class DateInput(forms.DateInput):
 
 
 class ReservationForm(forms.ModelForm):
-    services = forms.CharField(required=False)
+    # services = forms.ModelMultipleChoiceField(querset=Service.objects.all)
     class Meta:
          model = Reservation
-         fields = ['date', 'start_time', 'end_time', 'services']
+         fields = ['date', 'start_time', 'end_time', 'services', ]
          widgets = {
+
              'date': DatePickerInput(
            
              ), # default date-format %m/%d/%Y will be used
@@ -37,6 +38,15 @@ class ReservationForm(forms.ModelForm):
                  }
              ).end_of('reservation time'),
          }
+    
+    def __init__(self, *args, **kwargs):
+        self.services = kwargs.pop('Service', None)
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        self.fields["services"].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["services"].labels = "sample"
+        self.fields["services"].help_text = '<br>*Additional fees will be added upon adding services'
+        self.fields["services"].queryset = Service.objects.all()
+ 
 
 class CancellationForm(forms.ModelForm):
     
