@@ -19,7 +19,7 @@ class Facility (models.Model):
     isVehicle =  models.BooleanField(default=False)
     capacity = models.IntegerField(null=True, blank=True)
     image = StdImageField(default='court.png', upload_to='facility', blank=True, variations={'large': (1280, 720), 'thumbnail': (640, 480, True)})
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Tag)
     def __str__(self):
         return self.name
 
@@ -37,7 +37,7 @@ class Reservation(models.Model):
     start_time =  models.TimeField(auto_now=False, auto_now_add=False)
     end_time =  models.TimeField(auto_now=False, auto_now_add=False)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
-    services = models.ManyToManyField(Service, null=True, blank=True)
+    services = models.ManyToManyField(Service)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     cancelation_note = models.CharField(max_length=300, null=True, blank=True)
     
