@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+
 from .models import Facility, Service, Reservation
 from users.models import Profile
-from .forms import FacilityForm, ReservationForm, CancellationForm
+from .forms import FacilityForm, ReservationForm 
 
 
 def facility(request):
@@ -35,10 +37,12 @@ def reserve(request, facility_id):
             reserve = r_form.save(commit=False)
             reserve.user = user
             reserve.facility = facility
-            r_form.save() 
-            r_form.save_m2m()
+            # r_form.save() 
             cart = [facility.rate]
-            for service in reserve.services.all():
+
+            services = Service.objects.filter(id__in=request.POST['services'])
+
+            for service in services:
                 cart.append(service.price)
 
             
@@ -46,10 +50,11 @@ def reserve(request, facility_id):
             if user.balance >= reserve.total_amount:
                 user.balance -= reserve.total_amount                     
                 r_form.save()
-                
+                r_form.save_m2m()
+                user.save()
                 return redirect('reservation_list')
             else:
-                return redirect('facility_list') # wip error msg           
+                r_form # wip error msg           
     else:
         r_form = ReservationForm()
     r = dir(r_form)
