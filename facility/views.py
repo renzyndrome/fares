@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+
 from .models import Facility, Service, Reservation
 from users.models import Profile
-from .forms import FacilityForm, ReservationForm, CancellationForm
+from .forms import FacilityForm, ReservationForm 
 
 
 def facility(request):
@@ -29,20 +31,36 @@ def reserve(request, facility_id):
         facility = Facility.objects.get(pk=facility_id)
         facility_rate = facility.rate
         user = Profile.objects.get(user=request.user.id)
-        services = Service
         r_form = ReservationForm(request.POST)
         if r_form.is_valid():
+            
             reserve = r_form.save(commit=False)
             reserve.user = user
             reserve.facility = facility
-            # reserve.services.add()
-            reserve.total_amount = facility_rate
-            reserve.save()
-            return redirect('/')
+            # r_form.save() 
+            cart = [facility.rate]
+
+            services = Service.objects.filter(id__in=request.POST['services'])
+
+            for service in services:
+                cart.append(service.price)
+
+            
+            reserve.total_amount = sum(cart)
+            if user.balance >= reserve.total_amount:
+                user.balance -= reserve.total_amount                     
+                r_form.save()
+                r_form.save_m2m()
+                user.save()
+                return redirect('reservation_list')
+            else:
+                r_form # wip error msg           
     else:
         r_form = ReservationForm()
+    r = dir(r_form)
     context = {
         'r_form': r_form,
+        'r': r,
     }
 
     return render(request, 'facility/reserve.html', context)
@@ -68,7 +86,9 @@ def cancellation_request_list(request):
 @login_required
 def reservation_list(request):
     reservations = Reservation.objects.filter(user=request.user.profile)
-
+    for reservation in reservations:
+        if reservation.status == 'CANCELLED':
+            reservation.delete()
     context = {
         'reservations': reservations
     }
@@ -84,7 +104,7 @@ def cancellation_request(request, reservation_id):
             form = c_form.save(commit=False)
             form.status = 'PENDING FOR CANCELLATION'
             form.save()
-            return redirect('/')
+            return redirect('reservation_list')
         
     else:
         c_form = CancellationForm()

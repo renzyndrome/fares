@@ -11,7 +11,8 @@
       <div class="card-body text-center">
         <h3 style="color: rgb(71, 199, 221)" class="card-title text-center">{{ reservation.facility.name }}</h3>
         <p class="card-text text-center">{{ reservation.date }}</p>
-        <p class="card-text text-center">{{ reservation.start_time }} to {{ reservation.end_time }}</p>
+        <p class="card-text text-center small">{{ reservation.start_time }} to {{ reservation.end_time }}</p>
+        <h4>P{{ reservation.total_amount }}</h4>
         <small style="color: green;">{{ reservation.status }}</small>
       </div>
       {% if reservation.status == 'SUCCESS'%}
@@ -23,6 +24,7 @@
   </a>
     {% endfor %}
   </div>
-
+  {{ services }}
+hello
 
 {% endblock content %}

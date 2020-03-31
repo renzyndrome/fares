@@ -5,11 +5,13 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, BalanceForm
 from .models import Profile
+from .decorators import unauthenticated_user, allowed_users, admin_only
+
 
 def home(request):
 	return render(request, 'index.html')
 
-
+@unauthenticated_user
 def register(request):
     if request.method == 'POST': 
         form = UserRegisterForm(request.POST)
@@ -22,9 +24,6 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form} )
 
-@login_required
-def profile(request):
-    return render(request, 'users/profile.html')
 
 @login_required
 def profile(request):

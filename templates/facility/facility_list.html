@@ -11,7 +11,7 @@
     <img src="{{ facility.image.url  }}" class="card-img-top" alt="...">
       <div class="card-body text-center">
         <h3 class="card-title text-left">{{facility.name}}</h3>
-        <p class="card-text text-left">Some text inside the first card</p>
+        <p class="card-text text-left">{{facility.description}}</p>
       </div>
       <div class="card-footer text-center">
         <small class="text-muted">Rate: P{{facility.rate}}</small>
@@ -20,6 +20,5 @@
   </a>
     {% endfor %}
   </div>
-
 
 {% endblock content %}
