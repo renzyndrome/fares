@@ -33,6 +33,8 @@ $ docker-compose build
 
 $ docker-compose up -d
 
-$ docker-compose exec web_1 bash
+$ docker-compose exec fares_web_1 bash
 
-$ python manage.py migrate
+$ python manage.py makemigrations
+
+$python manage.py migrate
