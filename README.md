@@ -10,6 +10,8 @@
 
 *branch/type-of-branch/short-desc*
 
+# Pulling the latest updated
+$ git pull origin development
 
 ### build components:
 docker-compose build
@@ -35,6 +37,8 @@ $ docker-compose up -d
 
 $ docker-compose exec fares_web_1 bash
 
-$ python manage.py makemigrations
+$ python manage.py migrate users
 
-$python manage.py migrate
+$ python manage.py migrate facility
+
+$ python manage.py migrate
