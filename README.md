@@ -42,3 +42,8 @@ $ python manage.py migrate users
 $ python manage.py migrate facility
 
 $ python manage.py migrate
+
+### Controlling Admin Page
+
+$ python manage.py createsuperuser
+
