@@ -47,3 +47,9 @@ $ python manage.py migrate
 
 $ python manage.py createsuperuser
 
+### Controlling Cashier Page
+
+1. Create Cashier Profile
+2. Under Top_Up Page - Cashier can see Users Registered
+3. Change values to update balances.
+
