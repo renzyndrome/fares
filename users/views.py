@@ -13,10 +13,15 @@ def home(request):
 
 @unauthenticated_user
 def register(request):
-    if request.method == 'POST': 
+    if request.method == 'POST':
+        # user_profile 
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            register = form.save(commit=False)
+            register.is_active = True
+            # register.first_name = form.cleaned_data.get('first_name')
+            # register.last_name = form.cleaned_data.get('last_name')
+            register.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('login')

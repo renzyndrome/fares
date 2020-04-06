@@ -13,11 +13,12 @@ def create_profile(sender, instance, created, **kwargs):
         user_group, created = Group.objects.get_or_create(name='User')
 
         instance.groups.add(user_group)
-        Profile.objects.create(user=instance)
-        user_profile = Profile.objects.get(user=instance)
-        student_role = user_profile.role == 'Student'
+        Profile.objects.create(user=instance, first_name=instance.first_name,
+                                              last_name=instance.last_name
+                                              )
+
 
 @receiver
 def save_profile(sender, instance, created, **kwargs):
     instance.profile.save()
-    student_role.save()
+

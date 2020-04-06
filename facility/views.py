@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, timedelta, date
+from decimal import Decimal
+
 
 
 from .models import Facility, Service, Reservation
 from users.models import Profile
-from .forms import FacilityForm, ReservationForm 
+from .forms import FacilityForm, ReservationForm, CancellationForm
 
 
 def facility(request):
@@ -25,6 +28,8 @@ def facility_detail(request, facility_id):
 
     return render(request, 'facility/facility.html', context)
 
+
+
 @login_required
 def reserve(request, facility_id):
     if request.method == 'POST':
@@ -37,24 +42,31 @@ def reserve(request, facility_id):
             reserve = r_form.save(commit=False)
             reserve.user = user
             reserve.facility = facility
-            # r_form.save() 
-            cart = [facility.rate]
-
-            services = Service.objects.filter(id__in=request.POST['services'])
-
-            for service in services:
-                cart.append(service.price)
-
+            # reserve.end_time = (r_form.cleaned_data['start_time'] + timedelta(hours=1)).time()
+            duration = r_form.cleaned_data['duration']
+            end_time = datetime.now().strftime('%I:%M %p')
+          
+            start_time = r_form.cleaned_data['start_time']
+            delta = timedelta(hours = duration)
+            reserve.end_time = (datetime.combine(date(1,1,1),start_time) + delta).time().strftime('%I:%M %p')
             
+            cart = [facility.rate * duration]
+
+            services = Service.objects.filter(pk=request.POST.get('services'))
+            for service in services:
+                cart.append(service.price)            
+
             reserve.total_amount = sum(cart)
+            
             if user.balance >= reserve.total_amount:
-                user.balance -= reserve.total_amount                     
+                user.balance -= reserve.total_amount
+                         
                 r_form.save()
                 r_form.save_m2m()
                 user.save()
-                return redirect('reservation_list')
-            else:
-                r_form # wip error msg           
+            return redirect('reservation_list')
+        else:
+            r_form # wip error msg           
     else:
         r_form = ReservationForm()
     r = dir(r_form)

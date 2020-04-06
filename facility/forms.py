@@ -15,10 +15,12 @@ class DateInput(forms.DateInput):
 
 
 class ReservationForm(forms.ModelForm):
-    # services = forms.ModelMultipleChoiceField(querset=Service.objects.all)
+    services = forms.ModelMultipleChoiceField(queryset=Service.objects.all(), required=False)
+    # add_half_hour = forms.BooleanField(required=False)
+
     class Meta:
          model = Reservation
-         fields = ['date', 'start_time', 'end_time', 'services', ]
+         fields = ['date', 'start_time', 'duration', 'add_half_hour', 'services',  ]
          widgets = {
 
              'date': DatePickerInput(
@@ -38,6 +40,7 @@ class ReservationForm(forms.ModelForm):
                  }
              ).end_of('reservation time'),
          }
+
     
     def __init__(self, *args, **kwargs):
         self.services = kwargs.pop('Service', None)
@@ -46,10 +49,19 @@ class ReservationForm(forms.ModelForm):
         self.fields["services"].labels = "sample"
         self.fields["services"].help_text = '<br>*Additional fees will be added upon adding services'
         self.fields["services"].queryset = Service.objects.all()
- 
+        self.fields["add_half_hour"].widget = forms.widgets.CheckboxInput()
+
+        def user_balance(self):
+            user_profile = Profile.objects.get(user=request.user.id)
+            balance = user_profile.balance
+            total_amount = self.cleaned_data['total_amount']
+            if balance < total_amount:
+                raise forms.ValidationError("insuficient balance")
+            return total_amount
+            
 
 class CancellationForm(forms.ModelForm):
     
     class Meta:
         model = Reservation
-        fields = ['cancelation_note']
+        fields = ['cancellation_note']
