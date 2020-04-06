@@ -31,6 +31,7 @@ urlpatterns = [
     path('facility/<int:facility_id>/', facility_views.facility_detail, name='facility_detail'),
     path('reserve/<int:facility_id>/', facility_views.reserve, name='reserve'),
     path('reservation_list/', facility_views.reservation_list, name='reservation_list'),
+    path('reserve/insufficient-balance/', facility_views.insufficient_balance, name='insufficient_balance'),
     path('cancellation/<int:reservation_id>', facility_views.cancellation_request, name='cancellation'),
     path('cancellation_request_list/', facility_views.cancellation_request_list, name='cancellation_request_list')
 ]

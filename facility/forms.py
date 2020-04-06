@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.admin import widgets   
-from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
+from bootstrap_datepicker_plus import DateTimePickerInput
 
 from .models import Facility, Reservation, Service
 
@@ -10,8 +10,6 @@ class FacilityForm(forms.ModelForm):
         model = Facility
         fields = '__all__'
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
 
 
 class ReservationForm(forms.ModelForm):
@@ -20,26 +18,26 @@ class ReservationForm(forms.ModelForm):
 
     class Meta:
          model = Reservation
-         fields = ['date', 'start_time', 'duration', 'add_half_hour', 'services',  ]
+         fields = [ 'start_time', 'duration', 'add_half_hour', 'services',  ]
          widgets = {
 
-             'date': DatePickerInput(
-           
-             ), # default date-format %m/%d/%Y will be used
-             'start_time': TimePickerInput(
-                 options={
-                     "format": "hh:mm A"
-                 },
-                 attrs={
-                     'autocomplete': 'off'
-                 }
-             ).start_of('reservation time'),
-             'end_time': TimePickerInput(
-                 attrs={
-                     'autocomplete': 'off'
-                 }
-             ).end_of('reservation time'),
+            #  'start_time': TimePickerInput(
+            #      options={
+            #          "format": "hh:mm A"
+            #      },
+            #      attrs={
+            #          'autocomplete': 'off'
+            #      }
+            #  ).start_of('reservation time'),
+            #  'end_time': TimePickerInput(
+            #      attrs={
+            #          'autocomplete': 'off'
+            #      }
+            #  ).end_of('reservation time'),
+
+            # 'start_time': DateTimePickerInput()
          }
+   
 
     
     def __init__(self, *args, **kwargs):

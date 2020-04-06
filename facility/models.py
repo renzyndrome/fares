@@ -35,11 +35,10 @@ class Reservation(models.Model):
     STATUS = [('SUCCESS', 'SUCCESS'), ('PENDING FOR CANCELLATION', 'PENDING FOR CANCELLATION'), ('CANCELLED', 'CANCELLED')]
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     status = models.CharField(max_length=25, choices=STATUS, default='SUCCESS')
-    date = models.DateField()
-    start_time =  models.TimeField(auto_now=False, auto_now_add=False)
+    start_time =  models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     duration = models.IntegerField()
     add_half_hour = models.BooleanField()
-    end_time =  models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    end_time =  models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     add_half_hour = models.BooleanField(null=True, blank=True)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
     services = models.ManyToManyField(Service)

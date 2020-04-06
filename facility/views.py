@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 
@@ -42,14 +43,13 @@ def reserve(request, facility_id):
             reserve = r_form.save(commit=False)
             reserve.user = user
             reserve.facility = facility
-            # reserve.end_time = (r_form.cleaned_data['start_time'] + timedelta(hours=1)).time()
             duration = r_form.cleaned_data['duration']
             end_time = datetime.now().strftime('%I:%M %p')
           
             start_time = r_form.cleaned_data['start_time']
-            delta = timedelta(hours = duration)
-            reserve.end_time = (datetime.combine(date(1,1,1),start_time) + delta).time().strftime('%I:%M %p')
-            
+            # delta = timedelta(hours = duration)
+            # reserve.end_time = (datetime.combine(date(1,1,1),start_time) + delta).time().strftime('%I:%M %p')
+            reserve.end_time = start_time + timedelta(hours= duration)
             cart = [facility.rate * duration]
 
             services = Service.objects.filter(pk=request.POST.get('services'))
@@ -57,14 +57,17 @@ def reserve(request, facility_id):
                 cart.append(service.price)            
 
             reserve.total_amount = sum(cart)
-            
+
             if user.balance >= reserve.total_amount:
                 user.balance -= reserve.total_amount
                          
                 r_form.save()
                 r_form.save_m2m()
                 user.save()
-            return redirect('reservation_list')
+                return redirect('reservation_list')
+
+            else:
+                return redirect('insufficient_balance')
         else:
             r_form # wip error msg           
     else:
@@ -106,6 +109,12 @@ def reservation_list(request):
     }
 
     return render(request, 'facility/reservation_list.html', context)
+
+@login_required
+def insufficient_balance(request):
+    return HttpResponse('Insufficient balance!')
+
+
 
 def cancellation_request(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
