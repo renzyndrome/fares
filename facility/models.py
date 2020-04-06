@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from stdimage import StdImageField
+from django.shortcuts import redirect
+
 
 from users.models import Profile
 
@@ -20,8 +22,10 @@ class Facility (models.Model):
     capacity = models.IntegerField(null=True, blank=True)
     image = StdImageField(default='court.png', upload_to='facility', blank=True, variations={'large': (1280, 720), 'thumbnail': (640, 480, True)})
     tags = models.ManyToManyField(Tag)
+    
     def __str__(self):
         return self.name
+
 
 class Service (models.Model):
     name =  models.CharField(max_length=200)

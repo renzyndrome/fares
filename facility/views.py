@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from decimal import Decimal
+from django.db.models import Q
 
 
 
@@ -44,19 +45,32 @@ def reserve(request, facility_id):
             reserve.user = user
             reserve.facility = facility
             duration = r_form.cleaned_data['duration']
-            end_time = datetime.now().strftime('%I:%M %p')
+            # end_time = datetime.now().strftime('%I:%M %p')
           
             start_time = r_form.cleaned_data['start_time']
-            # delta = timedelta(hours = duration)
-            # reserve.end_time = (datetime.combine(date(1,1,1),start_time) + delta).time().strftime('%I:%M %p')
+         
             reserve.end_time = start_time + timedelta(hours= duration)
-            cart = [facility.rate * duration]
+            cart = [(facility.rate * duration)]
 
             services = Service.objects.filter(pk=request.POST.get('services'))
             for service in services:
                 cart.append(service.price)            
+            if r_form.cleaned_data['add_half_hour']:
+                reserve.end_time += timedelta(minutes= 30)
+                cart.append(facility.rate/2)
 
             reserve.total_amount = sum(cart)
+
+            # try:
+            #     if Reservation.objects.filter(Q(start_time__range=(start_time,reserve.end_time))|Q(reserve.end_time__range=(start_time,reserve.end_time))|Q(start_time__lt=start_time,reserve.end_time__gt=reserve.end_time)):
+            #         return redirect('already_reserved')
+            # except Reservation.DoesNotExist:
+            #     super(Reservation,self).save(*args,**kwargs)
+            
+            schedule = Reservation.objects.filter(start_time__gte=start_time,
+                                end_time__lte=reserve.end_time
+            if schedule:
+                return redirect('already_reserved')
 
             if user.balance >= reserve.total_amount:
                 user.balance -= reserve.total_amount
@@ -114,6 +128,11 @@ def reservation_list(request):
 def insufficient_balance(request):
     return HttpResponse('Insufficient balance!')
 
+@login_required
+def already_reserved(request):
+    return HttpResponse('Sorry, this facility has already reserved! Please choose another time.')
+
+
 
 
 def cancellation_request(request, reservation_id):
@@ -122,9 +141,15 @@ def cancellation_request(request, reservation_id):
         c_form = CancellationForm(request.POST, request.FILES,
                                     instance=reservation)
         if c_form.is_valid():
+
+            total_amount = request.POST.get('total_amount')
+            user = Profile.objects.get(user=request.user.id)
+
             form = c_form.save(commit=False)
             form.status = 'PENDING FOR CANCELLATION'
+            user.balance += reservation.total_amount
             form.save()
+            user.save()
             return redirect('reservation_list')
         
     else:

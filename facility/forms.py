@@ -35,7 +35,7 @@ class ReservationForm(forms.ModelForm):
             #      }
             #  ).end_of('reservation time'),
 
-            # 'start_time': DateTimePickerInput()
+            'start_time': DateTimePickerInput()
          }
    
 
