@@ -22,7 +22,6 @@ class FacilityAdmin(admin.ModelAdmin):
     list_display = ('name', 'isVehicle', 'capacity', 'rate')
     list_filter = ('name', 'capacity')
     ordering = ('name',)
-    date_hierarchy = 'reservation__date'
     search_fields = ('name',)
     fieldsets = (
         (Facility, {
