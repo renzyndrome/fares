@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Q
-
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 from .models import Facility, Service, Reservation
 from users.models import Profile
@@ -74,6 +74,16 @@ def reserve(request, facility_id):
                 r_form.save()
                 r_form.save_m2m()
                 user.save()
+
+                # notify via email
+                send_mail(
+                    'RESERVATION DETAILS',
+                    'Thank you for using FaRes! Here is your Reservation Summary:\n',
+                    settings.EMAIL_HOST_USER,
+                    [request.user.email],
+                    fail_silently=False,
+                )
+
                 return redirect('reservation_list')
 
             else:
@@ -156,4 +166,3 @@ def cancellation_request(request, reservation_id):
         'reservation': reservation
     }
     return render(request, 'facility/cancellation.html', context)
-
