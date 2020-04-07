@@ -61,15 +61,11 @@ def reserve(request, facility_id):
 
             reserve.total_amount = sum(cart)
 
-            # try:
-            #     if Reservation.objects.filter(Q(start_time__range=(start_time,reserve.end_time))|Q(reserve.end_time__range=(start_time,reserve.end_time))|Q(start_time__lt=start_time,reserve.end_time__gt=reserve.end_time)):
-            #         return redirect('already_reserved')
-            # except Reservation.DoesNotExist:
-            #     super(Reservation,self).save(*args,**kwargs)
-            
-            schedule = Reservation.objects.filter(start_time__gte=start_time,
-                                end_time__lte=reserve.end_time
-            if schedule:
+            schedule = Reservation.objects.filter(Q(start_time__range=[start_time, reserve.end_time])|
+                                                  Q(end_time__range=(start_time,reserve.end_time))|
+                                                  Q(start_time__lt=start_time, end_time__gt=reserve.end_time))
+
+            if schedule:    # reservation checking
                 return redirect('already_reserved')
 
             if user.balance >= reserve.total_amount:
