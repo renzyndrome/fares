@@ -35,7 +35,7 @@ $ docker-compose build
 
 $ docker-compose up -d
 
-$ docker exec -ti fares_web_1 bash
+$ docker exec -ti fares_db_1 bash
 
 $ python manage.py migrate users
 
