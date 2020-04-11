@@ -2,13 +2,17 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Facility, Service, Tag, Reservation
+from .models import Facility, Service, Tag, Reservation, Gallery
 from users.models import Profile
 from users.admin import ProfileAdmin
 
 
 class InlineReservation(admin.TabularInline):
     model = Reservation
+    extra = 1
+
+class InlineGallery(admin.TabularInline):
+    model = Gallery
     extra = 1
 
 class ProfileAdmin(ProfileAdmin):
@@ -18,7 +22,7 @@ class ProfileAdmin(ProfileAdmin):
 # ProfileAdmin.inlines.append(InlineReservation)
 
 class FacilityAdmin(admin.ModelAdmin):
-    inlines = [InlineReservation]
+    inlines = [InlineReservation, InlineGallery]
     list_display = ('name', 'isVehicle', 'capacity', 'rate')
     list_filter = ('name', 'capacity')
     ordering = ('name',)
@@ -37,7 +41,8 @@ class ReservationAdmin(admin.ModelAdmin):
     readonly_fields = ['total_amount']
     list_display = [field.name for field in Reservation._meta.get_fields() if field.name != 'services']
 
-
+class GalleryAdmin(admin.ModelAdmin):
+    model = Gallery
 
 admin.site.register(Facility, FacilityAdmin)
 admin.site.register(Service)
@@ -45,3 +50,4 @@ admin.site.register(Tag)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.unregister(Profile)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Gallery, GalleryAdmin)

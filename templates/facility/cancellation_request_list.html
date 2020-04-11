@@ -12,8 +12,9 @@
       <p class="card-text text-center">{{ reservation.start_time }} to {{ reservation.end_time }}</p>
       <small style="color: orange;">{{ reservation.status }}</small><br />
       <hr />
-      <p style="color: aqua;">Cancellation Reason <br />
-        <p>{{ reservation.cancelation_note }} </p>
+      <p>Requested by: {{ reservation.user.last_name}}, {{ reservation.user.first_name }}</p>
+      <p>Cancellation Reason: <br />
+        <p>{{ reservation.cancellation_note }} </p>
       </p>
     </div>
     <form method="POST" enctype="multipart/form-data" >{% csrf_token %}

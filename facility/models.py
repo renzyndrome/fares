@@ -51,3 +51,7 @@ class Reservation(models.Model):
     
     def __str__(self):
         return f'{self.facility} by {self.user}'
+
+class Gallery(models.Model):
+    facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
+    image = StdImageField(default='court.png', upload_to='facility', blank=True, variations={'large': (1280, 720), 'thumbnail': (640, 480, True)})
