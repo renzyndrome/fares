@@ -50,33 +50,50 @@
   <h3 class="my-4">Gallery</h3>
 
   <div class="row">
-
+    
+  {% for image in gallery %}
     <div class="col-md-3 col-sm-6 mb-4">
       <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+            <img class="img-fluid" src="{{ image.image.url }}" alt="">
           </a>
     </div>
-
-    <div class="col-md-3 col-sm-6 mb-4">
-      <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-    </div>
-
-    <div class="col-md-3 col-sm-6 mb-4">
-      <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-    </div>
-
-    <div class="col-md-3 col-sm-6 mb-4">
-      <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-    </div>
-
+  {% endfor %}
   </div>
   <!-- /.row -->
+
+  <div class="row">
+    <table class="table">
+      <thead>
+          <tr>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+          </tr>
+      </thead>
+      <tbody>
+          {%if reservation_list %}
+              {%for reservation in reservation_list %}
+              <tr>
+                  <td>
+                      {{ reservation.start_time|date:'Y-m-d'}}</a>
+                  </td>
+
+                  <td>
+                      {{ reservation.start_time|date:'H:i'}}
+                  </td>
+
+                  <td>
+                      {{ reservation.end_time|date:'H:i' }}
+                  </td>
+              </tr>
+              {% endfor %}
+          {% else %}
+          <p> NO RESERVATION </p>
+          {% endif %}
+      </tbody>
+  </table>
+     
+  </div>
 
 </div>
 <!-- /.container -->
