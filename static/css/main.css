@@ -107,3 +107,13 @@ a.custom-card,
 a.custom-card:hover {
   color: inherit;
 }
+
+/* Facility image */
+
+a-scene {
+  height: 600px;
+  width: 100%;
+}
+#main-image {
+  margin: auto;
+}
