@@ -28,7 +28,9 @@
   <div class="row my-3">
 
     <div class="col-md-8">
-      <img class="img-fluid" src="{{ facility.image.url  }}" alt="">
+      <a-scene embedded>
+        <a-sky src="{{ facility.image.url }}"></a-sky>
+    </a-scene>
     </div>
 
     <div class="col-md-4">
@@ -44,21 +46,7 @@
     </div>
 
   </div>
-  <!-- /.row -->
 
-  <!-- Related Projects Row -->
-  <h3 class="my-4">Gallery</h3>
-
-  <div class="row">
-    
-  {% for image in gallery %}
-    <div class="col-md-3 col-sm-6 mb-4">
-      <a href="#">
-            <img class="img-fluid" src="{{ image.image.url }}" alt="">
-          </a>
-    </div>
-  {% endfor %}
-  </div>
   <!-- /.row -->
 
   <div class="row">
