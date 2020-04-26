@@ -10,6 +10,7 @@ from django.conf import settings
 from .models import Facility, Service, Reservation
 from users.models import Profile
 from .forms import FacilityForm, ReservationForm, CancellationForm
+from users.decorators import admin_only
 
 
 def facility(request):
@@ -34,6 +35,7 @@ def facility_detail(request, facility_id):
 
 @login_required
 def reserve(request, facility_id):
+    reservations = Reservation.objects.filter(facility__id=facility_id)
     if request.method == 'POST':
         facility = Facility.objects.get(pk=facility_id)
         facility_rate = facility.rate
@@ -96,36 +98,36 @@ def reserve(request, facility_id):
     context = {
         'r_form': r_form,
         'r': r,
+        'reservations': reservations
     }
 
     return render(request, 'facility/reserve.html', context)
 
+
+
 @login_required
-def cancellation_request_list(request):
-    role = request.user.profile.role
-    reservations = Reservation.objects.filter(status='PENDING FOR CANCELLATION')
+def user_reservation_list(request):
+    reservations = Reservation.objects.filter(user=request.user.profile)
+
+    context = {
+        'reservations': reservations
+    }
+
+    return render(request, 'facility/user_reservation_list.html', context)
+
+
+def reservation_list(request):
+    reservations = Reservation.objects.all()
 
     if request.method == 'POST':
         form = Reservation.objects.get(pk=request.POST.get('reservation'))    
-        form.status = 'CANCELLED'
-        form.save()
-        return redirect('/')
-    
+        user = Profile.objects.get(user=form.user.id)
+        user.balance += form.total_amount
+        user.save()
+        form.delete()
+
     context = {
         'reservations': reservations,
-        'role': role
-    }
-
-    return render(request, 'facility/cancellation_request_list.html', context)
-
-@login_required
-def reservation_list(request):
-    reservations = Reservation.objects.filter(user=request.user.profile)
-    for reservation in reservations:
-        if reservation.status == 'CANCELLED':
-            reservation.delete()
-    context = {
-        'reservations': reservations
     }
 
     return render(request, 'facility/reservation_list.html', context)
@@ -137,7 +139,6 @@ def insufficient_balance(request):
 @login_required
 def already_reserved(request):
     return HttpResponse('Sorry, this facility has already reserved! Please choose another time.')
-
 
 
 
@@ -153,10 +154,8 @@ def cancellation_request(request, reservation_id):
 
             form = c_form.save(commit=False)
             form.status = 'PENDING FOR CANCELLATION'
-            user.balance += reservation.total_amount
             form.save()
-            user.save()
-            return redirect('reservation_list')
+            return redirect('user_reservation_list')
         
     else:
         c_form = CancellationForm()
