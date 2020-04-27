@@ -30,11 +30,11 @@ urlpatterns = [
     path('facility/',facility_views.facility, name='facility_list'),
     path('facility/<int:facility_id>/', facility_views.facility_detail, name='facility_detail'),
     path('reserve/<int:facility_id>/', facility_views.reserve, name='reserve'),
-    path('reservation_list/', facility_views.reservation_list, name='reservation_list'),
+    path('reservation_list/', facility_views.user_reservation_list, name='user_reservation_list'),
+    path('admin_reservation_list/', facility_views.reservation_list, name='admin_reservation_list'),
     path('reserve/insufficient-balance/', facility_views.insufficient_balance, name='insufficient_balance'),
     path('reserve/already_reserved/', facility_views.already_reserved, name='already_reserved'),
-    path('cancellation/<int:reservation_id>', facility_views.cancellation_request, name='cancellation'),
-    path('cancellation_request_list/', facility_views.cancellation_request_list, name='cancellation_request_list')
+    path('cancellation/<int:reservation_id>/', facility_views.cancellation_request, name='cancellation'),
 ]
 
 if settings.DEBUG:
