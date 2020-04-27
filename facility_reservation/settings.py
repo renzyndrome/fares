@@ -153,7 +153,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_USER = 'gmail'
+EMAIL_HOST_USER = 'dlsudfacility@gmail.com'
 
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
-EMAIL_HOST_PASSWORD = 'password gmail'
+EMAIL_HOST_PASSWORD = 'Facility123!'
