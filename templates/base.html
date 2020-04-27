@@ -44,9 +44,9 @@
                     {% ifequal user.groups.all.0.name "Admin" %}
                     <a class="nav-item nav-link" href="{% url 'admin_reservation_list' %}">Reservations</a>
                     {% endifequal %}
-                    {% ifequal user.groups.all.0.name "User" %}
+        
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                    {% endifequal %}
+     
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
                         <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>

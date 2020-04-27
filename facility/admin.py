@@ -20,8 +20,8 @@ class ProfileAdmin(ProfileAdmin):
 # ProfileAdmin.inlines.append(InlineReservation)
 
 class FacilityAdmin(admin.ModelAdmin):
-    inlines = [InlineReservation]
-    list_display = ('name', 'isVehicle', 'capacity', 'rate')
+    inlines = [InlineReservation, InlineGallery]
+    list_display = ('name', 'capacity', 'rate')
     list_filter = ('name', 'capacity')
     ordering = ('name',)
     search_fields = ('name',)
