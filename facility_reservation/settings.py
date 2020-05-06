@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'stdimage',
     'bootstrap_datepicker_plus',
     'bootstrap4',
+    'sendgrid'
 
     ]
 
@@ -144,7 +145,6 @@ LOGIN_URL = 'login'
 
 # Time Format
 TIME_INPUT_FORMATS = ['%I:%M %p',]
-
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
