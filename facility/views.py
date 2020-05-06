@@ -5,8 +5,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Q
 from django.core.mail import send_mail
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from django.contrib import messages
 
 from django.conf import settings
 
@@ -96,13 +95,13 @@ def reserve(request, facility_id):
                     e
                     return redirect('home')
                
-
+                messages.success(request,'reserved successfully')
                 return redirect('user_reservation_list')
 
             else:
                 return redirect('insufficient_balance')
         else:
-            r_form # wip error msg           
+            messages.error(request, "Error")         
     else:
         r_form = ReservationForm()
     r = dir(r_form)
