@@ -146,21 +146,14 @@ LOGIN_URL = 'login'
 # Time Format
 TIME_INPUT_FORMATS = ['%I:%M %p',]
 
-
 # Email
-# EMAIL_BACKEND = 'smtp.sendgrid.net'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = "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"
-# SENDGRID_SANDBOX_MODE_IN_DEBUG=False
-# SENDGRID_ECHO_TO_STDOUT=True
-
-# EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-# EMAIL_HOST_USER = 'dlsudfacility@gmail.com'
+EMAIL_HOST_USER = 'dlsudfacility@gmail.com'
 
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
-# EMAIL_HOST_PASSWORD = 'Facility123!'
+EMAIL_HOST_PASSWORD = 'Facility123!'
