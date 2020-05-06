@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Q
 from django.core.mail import send_mail
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 from django.conf import settings
 
 from .models import Facility, Service, Reservation
@@ -78,15 +81,23 @@ def reserve(request, facility_id):
                 user.save()
 
                 # notify via email
-                send_mail(
+
+      
+                try:
+                    send_mail(
                     'RESERVATION DETAILS',
                     'Thank you for using FaRes! Here is your Reservation Summary:\n',
-                    settings.EMAIL_HOST_USER,
+                    'dlsudfacility@gmail.com',
                     [request.user.email],
                     fail_silently=False,
-                )
+                    )
+                except Exception as e:
+                    print(e)
+                    e
+                    return redirect('home')
+               
 
-                return redirect('reservation_list')
+                return redirect('user_reservation_list')
 
             else:
                 return redirect('insufficient_balance')
