@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'stdimage',
     'bootstrap_datepicker_plus',
     'bootstrap4',
-    'sendgrid'
+
 
     ]
 
