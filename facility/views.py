@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .models import Facility, Service, Reservation
+from .models import Facility, Service, Reservation, Gallery
 from users.models import Profile
 from .forms import FacilityForm, ReservationForm, CancellationForm
 
@@ -22,10 +22,15 @@ def facility(request):
 
 def facility_detail(request, facility_id):
     facility = Facility.objects.get(pk=facility_id)
+    reservation_list = Reservation.objects.filter(facility=facility.id).order_by('start_time')
+    gallery = Gallery.objects.filter(facility=facility.id)
+
     tags = facility.tags.all()
     context = {
         'facility':facility,
-        'tags': tags
+        'tags': tags,
+        'reservation_list': reservation_list,
+        'gallery':gallery
     }
 
     return render(request, 'facility/facility.html', context)
@@ -50,7 +55,11 @@ def reserve(request, facility_id):
             start_time = r_form.cleaned_data['start_time']
          
             reserve.end_time = start_time + timedelta(hours= duration)
-            cart = [(facility.rate * duration)]
+            
+            if facility.isVehicle:
+                cart = [facility.rate]
+            else:
+                cart = [(facility.rate * duration)]
 
             services = Service.objects.filter(pk=request.POST.get('services'))
             for service in services:
