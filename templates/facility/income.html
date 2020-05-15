@@ -1,0 +1,44 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+<div class="container">
+  <h2>Weekly Income</h2>
+  <table class="table" id="reservationTable">
+    <thead>
+        <tr>
+            <th>Start Day</th>
+            <th>End Day</th>
+            <th>Income</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%if income_list %}
+            {%for income in income_list %}
+            {% if income.week != None%}
+            <tr>
+                <td>
+                    {{ income.week }}</a>
+                </td>
+
+                <td>
+                    {{ income.end_week }}
+                </td>
+
+                <td>
+                    PHP. {{ income.income }}
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        
+        {% else %}
+        <p> NO RESERVATION </p>
+        {% endif %}
+    </tbody>
+</table>
+</div>
+
+{% endblock content %}

@@ -6,13 +6,16 @@ from decimal import Decimal
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.contrib import messages
-
+import datetime as dt
 from django.conf import settings
 
 from .models import Facility, Service, Reservation
 from users.models import Profile
 from .forms import FacilityForm, ReservationForm, CancellationForm
 from users.decorators import admin_only
+
+from django.db.models.functions import ExtractWeek, ExtractYear
+from django.db.models import Sum, Count
 
 
 def facility(request):
@@ -175,3 +178,31 @@ def cancellation_request(request, reservation_id):
         'reservation': reservation
     }
     return render(request, 'facility/cancellation.html', context)
+
+@login_required
+def weekly_income(request):
+    income_list = (Reservation.objects
+        .annotate(year=ExtractYear('start_time'))
+        .annotate(week=ExtractWeek('start_time'))
+        .values('year', 'week')
+        .annotate(income=Sum('total_amount'))
+    )
+    weekly_list = []
+    
+    for income in income_list:
+        if income['week']:
+            week = "{year}-W{week}-1".format(year=income['year'], week=income['week'])
+            timestamp = dt.datetime.strptime(week, "%Y-W%W-%w")
+            d = str(income['year']) + "-W" + str(income['week'])
+            start = dt.datetime.strptime(d  + '-1', '%G-W%V-%u')
+            income['week'] = dt.datetime.strftime(start,'%b %d, %Y')
+            income['end_week'] =dt.datetime.strftime(start +  dt.timedelta(days=6),'%b %d, %Y')
+            income['income'] = str(income['income'])
+
+
+    context = {
+        'income_list': income_list,
+    }   
+
+    
+    return render(request, 'facility/income.html', context)
