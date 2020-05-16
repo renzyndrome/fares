@@ -41,6 +41,9 @@
                     {% if user.groups.all.0.name == "Cashier" or user.groups.all.0.name == "Admin" %}
                     <a class="nav-item nav-link" href="{% url 'user_list' %}">Top Up</a>
                     {% endif %}
+                    {% if user.groups.all.0.name == "Cashier" or user.groups.all.0.name == "Admin" %}
+                    <a class="nav-item nav-link" href="{% url 'income' %}">Income</a>
+                    {% endif %}
                     {% ifequal user.groups.all.0.name "Admin" %}
                     <a class="nav-item nav-link" href="{% url 'admin_reservation_list' %}">Reservations</a>
                     {% endifequal %}
