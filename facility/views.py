@@ -73,36 +73,37 @@ def reserve(request, facility_id):
                                                   Q(start_time__lt=start_time, end_time__gt=reserve.end_time))
 
             if schedule:    # reservation checking
-                return redirect('already_reserved')
-
-            if user.balance >= reserve.total_amount:
-                user.balance -= reserve.total_amount
-                         
-                r_form.save()
-                r_form.save_m2m()
-                user.save()
-
-                # notify via email
-
-      
-                try:
-                    send_mail(
-                    'RESERVATION DETAILS',
-                    'Thank you for using FaRes! Here is your Reservation Summary:\n',
-                    'dlsudfacility@gmail.com',
-                    [request.user.email],
-                    fail_silently=False,
-                    )
-                except Exception as e:
-                    print(e)
-                    e
-                    return redirect('home')
-               
-                messages.success(request,'reserved successfully')
-                return redirect('user_reservation_list')
+                messages.warning(request, 'Reservation Unsuccessful: The time and date you choose was taken')
 
             else:
-                return redirect('insufficient_balance')
+                if user.balance >= reserve.total_amount:
+                    user.balance -= reserve.total_amount
+
+                    r_form.save()
+                    r_form.save_m2m()
+                    user.save()
+
+                    # notify via email
+
+
+                    try:
+                        send_mail(
+                        'RESERVATION DETAILS',
+                        'Thank you for using FaRes! Here is your Reservation Summary:\n',
+                        'dlsudfacility@gmail.com',
+                        [request.user.email],
+                        fail_silently=False,
+                        )
+                    except Exception as e:
+                        print(e)
+                        e
+                        return redirect('home')
+
+                    messages.success(request,'reserved successfully')
+                    return redirect('user_reservation_list')
+
+                else:
+                    messages.warning(request, 'Reservation Unsuccessful: Insuficient Account Balance')
         else:
             messages.error(request, "Error")         
     else:
@@ -193,7 +194,7 @@ def weekly_income(request):
         if income['week']:
             week = "{year}-W{week}-1".format(year=income['year'], week=income['week'])
             timestamp = dt.datetime.strptime(week, "%Y-W%W-%w")
-            d = str(income['year']) + "-W" + str(income['week'])
+            d = str(income['year']) + "-W" + str(income['week'])            
             start = dt.datetime.strptime(d  + '-1', '%G-W%V-%u')
             income['week'] = dt.datetime.strftime(start,'%b %d, %Y')
             income['end_week'] =dt.datetime.strftime(start +  dt.timedelta(days=6),'%b %d, %Y')
