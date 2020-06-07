@@ -85,7 +85,7 @@ def reserve(request, facility_id):
 
                     # notify via email
 
-
+    
                     try:
                         send_mail(
                         'RESERVATION DETAILS',
