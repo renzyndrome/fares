@@ -1,4 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
- <h1>Home Page</h1>
+<div class="col-12-xs">
+    <div class="row justify-content-md-center">
+        <img src="/media/logo.png" style="width:50%; height:50%;">
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-4-md">
+
+            <h1>Welcome to DLSU-D Facilities Reservetation</h1>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-4-md">
+            <a class="nav-item nav-link" href="{% url 'user_reservation_list' %}">Reserve Now </a>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div style="width: 1150px; height: 300px; overflow: hidden">
+            <img src="/media/_banner-tourDLSUD.png" class="card-img-top" alt="..." width="500" height="600">
+        </div>
+    </div>
+    <hr>
+
+    <div class="row justify-content-md-center" style="background-image: linear-gradient(#ccffcc, white);">
+        <div class="col-4-md">
+            <h1>About us</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+        <p style="text-align:center">
+            FaRes is made by two college students namely Genten Lalas and Ramon Delos Reyes. They envision to make
+            reservations in DLSU-D to be easy and accessible online.</p>
+        <p style="text-align: center">
+            FaRes is an online reservation website that is specially made for DLSU-D. It has it's own online payment
+            system and inside it are the facilities available for students, professors or guests to reserve.
+        </p>
+    </div>
+    <hr>
+
+    <div class="row justify-content-md-center" style="background-image: linear-gradient(#ccffcc, white);">
+        <div class="col-4-md">
+            <h1>Why Choose us?</h1>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <p style="text-align:center"> Our team wishes to innovate reservations made inside DLSU-D. The reservation
+            process is quick and simple. We provide a 360 view of the facilities without needing you to go on the spot
+        </p>
+    </div>
+    <hr>
+
+</div>
 {% endblock content %}
