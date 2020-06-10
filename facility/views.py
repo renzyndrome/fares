@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Q
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.contrib import messages
 import datetime as dt
 from django.conf import settings
@@ -96,9 +98,15 @@ def reserve(request, facility_id):
 
 
                     try:
+                        context = {
+                            'user': user,
+                            'reservation': reserve
+
+                        }
+                        html_content = render_to_string('users/reservation_email.html', context)
                         send_mail(
                         'RESERVATION DETAILS',
-                        'Thank you for using FaRes! Here is your Reservation Summary:\n',
+                        strip_tags(html_content),
                         'dlsudfacility@gmail.com',
                         [request.user.email],
                         fail_silently=False,
