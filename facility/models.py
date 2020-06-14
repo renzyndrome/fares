@@ -17,7 +17,7 @@ class Tag(models.Model):
 class Facility (models.Model):
     name =  models.CharField(max_length=50)
     description = models.CharField(max_length=300, null=True, blank=True)
-    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=20, decimal_places=2)
     isVehicle =  models.BooleanField(default=False)
     capacity = models.IntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='facility')

@@ -70,7 +70,7 @@ def reserve(request, facility_id):
 
             schedule = Reservation.objects.filter(Q(start_time__range=[start_time, reserve.end_time])|
                                                   Q(end_time__range=(start_time,reserve.end_time))|
-                                                  Q(start_time__lt=start_time, end_time__gt=reserve.end_time))
+                                                  Q(start_time__lt=start_time, end_time__gt=reserve.end_time)|Q(facility=facility))
 
             if schedule:    # reservation checking
                 messages.warning(request, 'Reservation Unsuccessful: The time and date you choose was taken')
