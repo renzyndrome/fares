@@ -59,15 +59,18 @@ def reserve(request, facility_id):
             reserve.end_time = start_time + timedelta(hours= duration)
             cart = [(facility.rate * duration)]
 
-            services = Service.objects.filter(pk=request.POST.get('services'))
+            services = Service.objects.filter(id__in=request.POST.getlist('services'))
+            messages.success(request, request.POST.getlist('services'))
             for service in services:
-                cart.append(service.price)            
+                cart.append(service.price)
+                messages.success(request, service)
+
             if r_form.cleaned_data['add_half_hour']:
                 reserve.end_time += timedelta(minutes= 30)
                 cart.append(facility.rate/2)
 
             reserve.total_amount = sum(cart)
-
+            messages.success(request, reserve.total_amount)
             schedule = Reservation.objects.filter(Q(start_time__range=[start_time, reserve.end_time])|
                                                   Q(end_time__range=(start_time,reserve.end_time))|
                                                   Q(start_time__lt=start_time, end_time__gt=reserve.end_time)|Q(facility=facility))
