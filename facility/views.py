@@ -70,7 +70,7 @@ def reserve(request, facility_id):
             else:
                 cart = [(facility.rate * duration)]
 
-            services = Service.objects.filter(pk=request.POST.get('services'))
+            services = Service.objects.filter(id__in=request.POST.getlist('services'))
             for service in services:
                 cart.append(service.price)            
             if r_form.cleaned_data['add_half_hour']:
@@ -81,8 +81,8 @@ def reserve(request, facility_id):
 
             schedule = Reservation.objects.filter(Q(start_time__range=[start_time, reserve.end_time])|
                                                   Q(end_time__range=(start_time,reserve.end_time))|
-                                                  Q(start_time__lt=start_time, end_time__gt=reserve.end_time))
-
+                                                  Q(start_time__lt=start_time, end_time__gt=reserve.end_time)).filter(facility=facility)
+            
             if schedule:    # reservation checking
                 messages.warning(request, 'Reservation Unsuccessful: The time and date you choose was taken')
 
