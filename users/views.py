@@ -59,7 +59,7 @@ def view_user(request, user_id):
     user = user_profile.user
     if request.method == 'POST': 
         #u_form = UserUpdateForm(request.POST, instance=user)
-        if(request.user.groups[0].name == 'Cashier' or request.user.groups[0].name == 'Admin'):
+        if(request.user.groups.filter(name__contains = 'Cashier') or request.user.groups.filter(name__contains= 'Admin')):
             p_form = BalanceForm(request.POST, request.FILES,
                                     instance=user_profile)
             new_value = [Decimal(p_form.data['additional_balance']) ,Decimal(p_form.data['balance'])]
