@@ -35,6 +35,7 @@ urlpatterns = [
     path('reserve/insufficient-balance/', facility_views.insufficient_balance, name='insufficient_balance'),
     path('reserve/already_reserved/', facility_views.already_reserved, name='already_reserved'),
     path('cancellation/<int:reservation_id>/', facility_views.cancellation_request, name='cancellation'),
+    path('approve_cancellation/<int:reservation_id>/', facility_views.approve_cancellation, name='approve_cancellation'),
     path('income/', facility_views.weekly_income, name='income'),
 ]
 

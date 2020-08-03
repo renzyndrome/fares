@@ -197,6 +197,16 @@ def cancellation_request(request, reservation_id):
     }
     return render(request, 'facility/cancellation.html', context)
 
+def approve_cancellation(request, reservation_id):
+    reservation = Reservation.objects.get(pk=reservation_id)
+    requestor = reservation.user
+    requestor.balance += reservation.total_amount
+    reservation.status = 'CANCELLED'
+    requestor.save()
+    reservation.save()
+    return redirect('admin_reservation_list')
+
+
 @login_required
 def weekly_income(request):
     income_list = (Reservation.objects

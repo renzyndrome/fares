@@ -31,7 +31,7 @@
       </fieldset>
       {% if reservation.status == 'PENDING FOR CANCELLATION' %}
       <div class="form-group text-center">
-        <button class="btn btn-outline-info" type="submit">Approve Cancellation</button>
+        <a class="btn btn-outline-info" href="{% url 'approve_cancellation' reservation.id %}">Approve Cancellation</a>
       </div>
       {% endif %}
     </form>
