@@ -1,0 +1,67 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+
+<div class="container">
+  <h2>Current Reservations</h2>
+  <table class="table" id="reservationTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Start Time</th  >
+            <th>End Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%if reservations %}
+            {%for reservation in reservations %}
+            <tr>
+                <td>
+                    {{ reservation.start_time|date:'Y-m-d'}}</a>
+                </td>
+
+                <td>
+                    {{ reservation.start_time|date:'H:i'}}
+                </td>
+
+                <td>
+                    {{ reservation.end_time|date:'H:i' }}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <p> NO RESERVATION </p>
+        {% endif %}
+    </tbody>
+</table>
+<br>
+<hr>
+<h2>Reserve Now</h2>
+<br>
+  {{ r_form.media }}
+<form method="post">{% csrf_token %}
+    {% if r_form.errors %}
+    {% for field in r_form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in r_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+    {% bootstrap_form r_form %} 
+   
+  <input type="submit" value="Save">
+</form>
+<br><br>
+</div>
+
+{% endblock content %}

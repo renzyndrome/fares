@@ -14,12 +14,12 @@
   <!-- Portfolio Item Heading -->
   <div class="row">
     <div class="col-md-10">
-      <h1 class="my-4">{{ facility.name }}
-        <small><h6><span>P{{ facility.rate }}/hr</h6></small>
+      <h1 class="my-4">{{ vehicle.name }}
+        <small><h6><span>P{{ vehicle.rate }}/hr</h6></small>
       </h1>
     </div>
     <div class="col-md2">
-      <a href="{% url 'reserve_facility' facility.id %}" class="btn btn-lg btn-success my-4">Reserve</button></a>
+      <a href="{% url 'reserve_vehicle' vehicle.id %}" class="btn btn-lg btn-success my-4">Reserve</button></a>
     </div>
 
 </div>
@@ -29,20 +29,13 @@
 
     <div class="col-md-8">
       <a-scene embedded>
-        <a-sky src="{{ facility.image.url }}"></a-sky>
+        <a-sky src="{{ vehicle.image.url }}"></a-sky>
     </a-scene>
     </div>
 
     <div class="col-md-4">
       <h3 class="my-3">Project Description</h3>
-      <p>{{facility.description}}</p>
-      <h3 class="my-3">Suitable for the following:</h3>
-      <ul>
-        {{facility.tags_set}}
-        {% for tag in tags %}
-          <li>{{ tag }}</li>
-        {% endfor %}
-      </ul>
+      <p>{{vehicle.description}}</p>
     </div>
 
   </div>

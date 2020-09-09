@@ -32,6 +32,7 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="{% url 'facility_list' %}">Facilities</a>
+                <a class="nav-item nav-link" href="{% url 'vehicle_list' %}">Vehicles</a>
                 <a class="nav-item nav-link" href="{% url 'user_reservation_list' %}">My Reservation</a>
 
                 </div>
@@ -73,9 +74,9 @@
                 {% block content %}{% endblock %}
 
     </main>
-                  
+    <script src="{% static 'js/bootstrap.min.js' %}" charset="utf-8"></script>              
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}" charset="utf-8"></script>
+
     <!-- datatables --> 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 </body>

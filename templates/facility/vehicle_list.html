@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    
+
+<div class="card-columns custom-card">
+    {% for vehicle in vehicles %}
+    <a  href="{% url 'vehicle_detail' vehicle.id %}">
+    <div class="card">
+    <img src="{{ vehicle.image.url  }}" class="card-img-top" alt="...">
+      <div class="card-body text-center">
+        <h3 class="card-title text-left">{{vehicle.name}}</h3>
+        <p class="card-text text-left">{{vehicle.description}}</p>
+      </div>
+      <div class="card-footer text-center">
+        <small class="text-muted">Rate: P{{vehicle.rate}}</small>
+      </div>
+    </div>
+  </a>
+    {% endfor %}
+  </div>
+
+{% endblock content %}
