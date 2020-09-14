@@ -269,6 +269,7 @@ def pay_with_funds(request):
                     user.balance -= reservation.total_amount
                     reservation.status = 'SUCCESS'
                     reservation.save()
+                    user.save()
                     # notify via email    
                     send_email(request.user, reservation)
 
@@ -286,7 +287,7 @@ def vehicle_pay_with_funds(request):
                     user.balance -= reservation.total_amount
                     reservation.status = 'SUCCESS'
                     reservation.save()
-                    print(reservation.status)
+                    user.save()
                     # notify via email    
                     send_email(request.user, reservation)
 
