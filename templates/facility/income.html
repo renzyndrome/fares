@@ -15,9 +15,9 @@
         </tr>
     </thead>
     <tbody>
-        {%if income_list %}
+      
             {%for income in income_list %}
-            {% if income.week != None%}
+           
             <tr>
                 <td>
                     {{ income.week }}</a>
@@ -28,15 +28,15 @@
                 </td>
 
                 <td>
-                    PHP. {{ income.income }}
+                    PHP {{ income.income }}
                 </td>
             </tr>
-            {% endif %}
+       
             {% endfor %}
         
-        {% else %}
+       
         <p> NO RESERVATION </p>
-        {% endif %}
+    
     </tbody>
 </table>
 </div>

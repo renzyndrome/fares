@@ -35,10 +35,10 @@ class VehicleAdmin(admin.ModelAdmin):
 #     list_display = [field.name for field in Reservation._meta.get_fields() if field.name != 'services']
 
 class FacilityReservationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('facility', 'user', 'start_time', 'end_time', 'total_amount', 'status')
 
 class VehicleReservationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('vehicle', 'user', 'start_time', 'end_time', 'total_amount', 'status')
 
 admin.site.register(Facility, FacilityAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
@@ -47,5 +47,5 @@ admin.site.register(Tag)
 # admin.site.register(Reservation, ReservationAdmin)
 admin.site.unregister(Profile)
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(FacilityReservation, VehicleAdmin)
+admin.site.register(FacilityReservation, FacilityReservationAdmin)
 admin.site.register(VehicleReservation, VehicleReservationAdmin)

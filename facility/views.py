@@ -468,15 +468,24 @@ def facility_approve_cancellation(request, reservation_id):
 
 @login_required
 def weekly_income(request):
-    income_list = (Reservation.objects
+    facility_income = (FacilityReservation.objects
         .annotate(year=ExtractYear('start_time'))
         .annotate(week=ExtractWeek('start_time'))
         .values('year', 'week')
         .annotate(income=Sum('total_amount'))
     )
-    weekly_list = []
-    
-    for income in income_list:
+
+    vehicle_income = (VehicleReservation.objects
+        .annotate(year=ExtractYear('start_time'))
+        .annotate(week=ExtractWeek('start_time'))
+        .values('year', 'week')
+        .annotate(income=Sum('total_amount'))
+    )
+
+    income_list = chain(facility_income, vehicle_income)
+
+
+    for income in facility_income:
         if income['week']:
             week = "{year}-W{week}-1".format(year=income['year'], week=income['week'])
             timestamp = dt.datetime.strptime(week, "%Y-W%W-%w")
@@ -485,6 +494,20 @@ def weekly_income(request):
             income['week'] = dt.datetime.strftime(start,'%b %d, %Y')
             income['end_week'] =dt.datetime.strftime(start +  dt.timedelta(days=6),'%b %d, %Y')
             income['income'] = str(income['income'])
+            print(week)
+            print(income['week'])
+
+    for income in vehicle_income:
+        if income['week']:
+            week = "{year}-W{week}-1".format(year=income['year'], week=income['week'])
+            timestamp = dt.datetime.strptime(week, "%Y-W%W-%w")
+            d = str(income['year']) + "-W" + str(income['week'])            
+            start = dt.datetime.strptime(d  + '-1', '%G-W%V-%u')
+            income['week'] = dt.datetime.strftime(start,'%b %d, %Y')
+            income['end_week'] =dt.datetime.strftime(start +  dt.timedelta(days=6),'%b %d, %Y')
+            income['income'] = str(income['income'])
+            print(week)
+            print(income['week'])
 
 
     context = {
