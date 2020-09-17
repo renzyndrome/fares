@@ -351,19 +351,19 @@ def vehicle_payment_complete(request):
 
 
 @login_required
-def user_reservation_list(request):
-    reservations = chain(FacilityReservation.objects.filter(user=request.user.profile), VehicleReservation.objects.filter(user=request.user.profile))
+def admin_reservation_list(request):
+    reservations = chain(FacilityReservation.objects.all(), VehicleReservation.objects.all())
 
     context = {
         'reservations': reservations
     }
 
-    return render(request, 'facility/user_reservation_list.html', context)
+    return render(request, 'facility/admin_reservation_list.html', context)
 
 
 @login_required
-def user_facility_reservation_list(request):
-    reservations = FacilityReservation.objects.filter(user=request.user.profile)
+def user_reservation_list(request):
+    reservations = chain(FacilityReservation.objects.filter(user=request.user.profile), VehicleReservation.objects.filter(user=request.user.profile))
 
     context = {
         'reservations': reservations
@@ -373,21 +373,6 @@ def user_facility_reservation_list(request):
     
 
 
-def reservation_list(request):
-    reservations = Reservation.objects.all()
-
-    if request.method == 'POST':
-        form = Reservation.objects.get(pk=request.POST.get('reservation'))    
-        user = Profile.objects.get(user=form.user.id)
-        user.balance += form.total_amount
-        user.save()
-        form.delete()
-
-    context = {
-        'reservations': reservations,
-    }
-
-    return render(request, 'facility/reservation_list.html', context)
 
 @login_required
 def insufficient_balance(request):
@@ -454,6 +439,7 @@ def approve_cancellation(request, reservation_id):
     reservation.status = 'CANCELLED'
     requestor.save()
     reservation.save()
+    messages.warning(request, 'Reservation has been canceled')
     return redirect('admin_reservation_list')
 
 def facility_approve_cancellation(request, reservation_id):
@@ -463,6 +449,7 @@ def facility_approve_cancellation(request, reservation_id):
     reservation.status = 'CANCELLED'
     requestor.save()
     reservation.save()
+    messages.warning(request, 'Reservation has been canceled')
     return redirect('admin_reservation_list')
 
 

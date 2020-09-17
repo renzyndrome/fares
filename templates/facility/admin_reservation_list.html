@@ -5,9 +5,9 @@
 <div class="card-columns custom-card">
   {% for reservation in reservations %}
   <div class="card">
-    <img src="{{ reservation.facility.image.url  }}" class="card-img-top" alt="...">
+    <img src="{{ reservation.facility.image.url  }}{{ reservation.vehicle.image.url  }}" class="card-img-top" alt="...">
     <div class="card-body text-center">
-      <h3 style="color: rgb(71, 199, 221)" class="card-title text-center">{{ reservation.facility.name }}</h3>
+      <h3 style="color: rgb(71, 199, 221)" class="card-title text-center">{{ reservation.facility.name }}{{ reservation.vehicle.name }}</h3>
       <p class="card-text text-center">{{ reservation.start_time }} to {{ reservation.end_time }}</p>
       {% if reservation.status == 'SUCCESS' %}
       <small class="text-success">
