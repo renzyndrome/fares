@@ -327,10 +327,9 @@ def facility_payment_complete(request):
 			# save purchase here/ setup email confirmation
             reservation.status = "SUCCESS"
             reservation.save()
-            print(reservation.status)
+            messages.success(request,'reserved successfully')
             # notify via email    
             send_email(request.user, reservation)
-
     return redirect('user_reservation_list')
 
 
@@ -344,6 +343,7 @@ def vehicle_payment_complete(request):
 			# save purchase here/ setup email confirmation
             reservation.status = "SUCCESS"
             reservation.save()
+            messages.success(request,'reserved successfully')
             # notify via email    
             send_email(request.user, reservation)
 
